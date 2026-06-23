@@ -1,0 +1,721 @@
+[gd_scene format=3 uid="uid://b1hhf6gjr8p0r"]
+
+[ext_resource type="Script" uid="uid://blrmtqk8w5ylo" path="res://scripts/game_manager.gd" id="1"]
+[ext_resource type="Script" uid="uid://dcjye2gpponbp" path="res://scripts/micro_board.gd" id="2"]
+
+[node name="Game" type="Control" unique_id=663222742]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameManager" type="Node" parent="." unique_id=176964810]
+script = ExtResource("1")
+
+[node name="Board" type="Node2D" parent="." unique_id=2145260326]
+
+[node name="MacroGrid" type="GridContainer" parent="Board" unique_id=1253567284]
+offset_left = 46.0
+offset_top = 20.0
+offset_right = 646.0
+offset_bottom = 620.0
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 3
+
+[node name="MicroBoard_0_0" type="Control" parent="Board/MacroGrid" unique_id=1969050879]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2")
+
+[node name="CellGrid" type="GridContainer" parent="Board/MacroGrid/MicroBoard_0_0" unique_id=2063794199]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell_0_0" type="Button" parent="Board/MacroGrid/MicroBoard_0_0/CellGrid" unique_id=123876268]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_1" type="Button" parent="Board/MacroGrid/MicroBoard_0_0/CellGrid" unique_id=921044694]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_2" type="Button" parent="Board/MacroGrid/MicroBoard_0_0/CellGrid" unique_id=1190893836]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_0" type="Button" parent="Board/MacroGrid/MicroBoard_0_0/CellGrid" unique_id=1755914335]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_1" type="Button" parent="Board/MacroGrid/MicroBoard_0_0/CellGrid" unique_id=322948139]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_2" type="Button" parent="Board/MacroGrid/MicroBoard_0_0/CellGrid" unique_id=1741967710]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_0" type="Button" parent="Board/MacroGrid/MicroBoard_0_0/CellGrid" unique_id=1014659931]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_1" type="Button" parent="Board/MacroGrid/MicroBoard_0_0/CellGrid" unique_id=413546829]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_2" type="Button" parent="Board/MacroGrid/MicroBoard_0_0/CellGrid" unique_id=1790718329]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="MicroBoard_0_1" type="Control" parent="Board/MacroGrid" unique_id=1777501192]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2")
+macro_pos = Vector2i(1, 0)
+
+[node name="CellGrid" type="GridContainer" parent="Board/MacroGrid/MicroBoard_0_1" unique_id=160549689]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell_0_0" type="Button" parent="Board/MacroGrid/MicroBoard_0_1/CellGrid" unique_id=1162504168]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_1" type="Button" parent="Board/MacroGrid/MicroBoard_0_1/CellGrid" unique_id=1384321872]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_2" type="Button" parent="Board/MacroGrid/MicroBoard_0_1/CellGrid" unique_id=617154026]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_0" type="Button" parent="Board/MacroGrid/MicroBoard_0_1/CellGrid" unique_id=755739483]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_1" type="Button" parent="Board/MacroGrid/MicroBoard_0_1/CellGrid" unique_id=1710276497]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_2" type="Button" parent="Board/MacroGrid/MicroBoard_0_1/CellGrid" unique_id=349634353]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_0" type="Button" parent="Board/MacroGrid/MicroBoard_0_1/CellGrid" unique_id=910665579]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_1" type="Button" parent="Board/MacroGrid/MicroBoard_0_1/CellGrid" unique_id=638493371]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_2" type="Button" parent="Board/MacroGrid/MicroBoard_0_1/CellGrid" unique_id=1428928299]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="MicroBoard_0_2" type="Control" parent="Board/MacroGrid" unique_id=1799306726]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2")
+macro_pos = Vector2i(2, 0)
+
+[node name="CellGrid" type="GridContainer" parent="Board/MacroGrid/MicroBoard_0_2" unique_id=1396679770]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell_0_0" type="Button" parent="Board/MacroGrid/MicroBoard_0_2/CellGrid" unique_id=510528576]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_1" type="Button" parent="Board/MacroGrid/MicroBoard_0_2/CellGrid" unique_id=809940813]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_2" type="Button" parent="Board/MacroGrid/MicroBoard_0_2/CellGrid" unique_id=1457990143]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_0" type="Button" parent="Board/MacroGrid/MicroBoard_0_2/CellGrid" unique_id=802826885]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_1" type="Button" parent="Board/MacroGrid/MicroBoard_0_2/CellGrid" unique_id=995174255]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_2" type="Button" parent="Board/MacroGrid/MicroBoard_0_2/CellGrid" unique_id=1286181961]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_0" type="Button" parent="Board/MacroGrid/MicroBoard_0_2/CellGrid" unique_id=1306562828]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_1" type="Button" parent="Board/MacroGrid/MicroBoard_0_2/CellGrid" unique_id=948651069]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_2" type="Button" parent="Board/MacroGrid/MicroBoard_0_2/CellGrid" unique_id=478865588]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="MicroBoard_1_0" type="Control" parent="Board/MacroGrid" unique_id=1044519843]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2")
+macro_pos = Vector2i(0, 1)
+
+[node name="CellGrid" type="GridContainer" parent="Board/MacroGrid/MicroBoard_1_0" unique_id=811743226]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell_0_0" type="Button" parent="Board/MacroGrid/MicroBoard_1_0/CellGrid" unique_id=918013401]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_1" type="Button" parent="Board/MacroGrid/MicroBoard_1_0/CellGrid" unique_id=109579851]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_2" type="Button" parent="Board/MacroGrid/MicroBoard_1_0/CellGrid" unique_id=964689608]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_0" type="Button" parent="Board/MacroGrid/MicroBoard_1_0/CellGrid" unique_id=1848866666]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_1" type="Button" parent="Board/MacroGrid/MicroBoard_1_0/CellGrid" unique_id=446153168]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_2" type="Button" parent="Board/MacroGrid/MicroBoard_1_0/CellGrid" unique_id=1881646047]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_0" type="Button" parent="Board/MacroGrid/MicroBoard_1_0/CellGrid" unique_id=1586999801]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_1" type="Button" parent="Board/MacroGrid/MicroBoard_1_0/CellGrid" unique_id=12663513]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_2" type="Button" parent="Board/MacroGrid/MicroBoard_1_0/CellGrid" unique_id=1653703788]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="MicroBoard_1_1" type="Control" parent="Board/MacroGrid" unique_id=745016939]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2")
+macro_pos = Vector2i(1, 1)
+
+[node name="CellGrid" type="GridContainer" parent="Board/MacroGrid/MicroBoard_1_1" unique_id=199580339]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell_0_0" type="Button" parent="Board/MacroGrid/MicroBoard_1_1/CellGrid" unique_id=259357809]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_1" type="Button" parent="Board/MacroGrid/MicroBoard_1_1/CellGrid" unique_id=872640867]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_2" type="Button" parent="Board/MacroGrid/MicroBoard_1_1/CellGrid" unique_id=1538199980]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_0" type="Button" parent="Board/MacroGrid/MicroBoard_1_1/CellGrid" unique_id=1585775599]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_1" type="Button" parent="Board/MacroGrid/MicroBoard_1_1/CellGrid" unique_id=1523682777]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_2" type="Button" parent="Board/MacroGrid/MicroBoard_1_1/CellGrid" unique_id=1556561390]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_0" type="Button" parent="Board/MacroGrid/MicroBoard_1_1/CellGrid" unique_id=336317030]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_1" type="Button" parent="Board/MacroGrid/MicroBoard_1_1/CellGrid" unique_id=1016188604]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_2" type="Button" parent="Board/MacroGrid/MicroBoard_1_1/CellGrid" unique_id=2060512090]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="MicroBoard_1_2" type="Control" parent="Board/MacroGrid" unique_id=220096776]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2")
+macro_pos = Vector2i(2, 1)
+
+[node name="CellGrid" type="GridContainer" parent="Board/MacroGrid/MicroBoard_1_2" unique_id=1396176248]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell_0_0" type="Button" parent="Board/MacroGrid/MicroBoard_1_2/CellGrid" unique_id=975558135]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_1" type="Button" parent="Board/MacroGrid/MicroBoard_1_2/CellGrid" unique_id=1850453631]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_2" type="Button" parent="Board/MacroGrid/MicroBoard_1_2/CellGrid" unique_id=1652041224]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_0" type="Button" parent="Board/MacroGrid/MicroBoard_1_2/CellGrid" unique_id=347562269]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_1" type="Button" parent="Board/MacroGrid/MicroBoard_1_2/CellGrid" unique_id=1008213775]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_2" type="Button" parent="Board/MacroGrid/MicroBoard_1_2/CellGrid" unique_id=1607310253]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_0" type="Button" parent="Board/MacroGrid/MicroBoard_1_2/CellGrid" unique_id=941521017]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_1" type="Button" parent="Board/MacroGrid/MicroBoard_1_2/CellGrid" unique_id=1871455776]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_2" type="Button" parent="Board/MacroGrid/MicroBoard_1_2/CellGrid" unique_id=1180955554]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="MicroBoard_2_0" type="Control" parent="Board/MacroGrid" unique_id=1877957890]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2")
+macro_pos = Vector2i(0, 2)
+
+[node name="CellGrid" type="GridContainer" parent="Board/MacroGrid/MicroBoard_2_0" unique_id=240738270]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell_0_0" type="Button" parent="Board/MacroGrid/MicroBoard_2_0/CellGrid" unique_id=651560712]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_1" type="Button" parent="Board/MacroGrid/MicroBoard_2_0/CellGrid" unique_id=964771921]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_2" type="Button" parent="Board/MacroGrid/MicroBoard_2_0/CellGrid" unique_id=4610542]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_0" type="Button" parent="Board/MacroGrid/MicroBoard_2_0/CellGrid" unique_id=1554018190]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_1" type="Button" parent="Board/MacroGrid/MicroBoard_2_0/CellGrid" unique_id=300826780]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_2" type="Button" parent="Board/MacroGrid/MicroBoard_2_0/CellGrid" unique_id=700819491]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_0" type="Button" parent="Board/MacroGrid/MicroBoard_2_0/CellGrid" unique_id=94367180]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_1" type="Button" parent="Board/MacroGrid/MicroBoard_2_0/CellGrid" unique_id=1914198835]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_2" type="Button" parent="Board/MacroGrid/MicroBoard_2_0/CellGrid" unique_id=1924315558]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="MicroBoard_2_1" type="Control" parent="Board/MacroGrid" unique_id=166081202]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2")
+macro_pos = Vector2i(1, 2)
+
+[node name="CellGrid" type="GridContainer" parent="Board/MacroGrid/MicroBoard_2_1" unique_id=2094141424]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell_0_0" type="Button" parent="Board/MacroGrid/MicroBoard_2_1/CellGrid" unique_id=1318574993]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_1" type="Button" parent="Board/MacroGrid/MicroBoard_2_1/CellGrid" unique_id=510353009]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_2" type="Button" parent="Board/MacroGrid/MicroBoard_2_1/CellGrid" unique_id=2122560422]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_0" type="Button" parent="Board/MacroGrid/MicroBoard_2_1/CellGrid" unique_id=2053626818]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_1" type="Button" parent="Board/MacroGrid/MicroBoard_2_1/CellGrid" unique_id=1295035198]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_2" type="Button" parent="Board/MacroGrid/MicroBoard_2_1/CellGrid" unique_id=2028942334]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_0" type="Button" parent="Board/MacroGrid/MicroBoard_2_1/CellGrid" unique_id=304264088]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_1" type="Button" parent="Board/MacroGrid/MicroBoard_2_1/CellGrid" unique_id=1656771451]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_2" type="Button" parent="Board/MacroGrid/MicroBoard_2_1/CellGrid" unique_id=531261505]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="MicroBoard_2_2" type="Control" parent="Board/MacroGrid" unique_id=1267007592]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2")
+macro_pos = Vector2i(2, 2)
+
+[node name="CellGrid" type="GridContainer" parent="Board/MacroGrid/MicroBoard_2_2" unique_id=1144346666]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Cell_0_0" type="Button" parent="Board/MacroGrid/MicroBoard_2_2/CellGrid" unique_id=911488877]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_1" type="Button" parent="Board/MacroGrid/MicroBoard_2_2/CellGrid" unique_id=217441468]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_0_2" type="Button" parent="Board/MacroGrid/MicroBoard_2_2/CellGrid" unique_id=1712748156]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_0" type="Button" parent="Board/MacroGrid/MicroBoard_2_2/CellGrid" unique_id=795579118]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_1" type="Button" parent="Board/MacroGrid/MicroBoard_2_2/CellGrid" unique_id=1599239243]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_1_2" type="Button" parent="Board/MacroGrid/MicroBoard_2_2/CellGrid" unique_id=1940013987]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_0" type="Button" parent="Board/MacroGrid/MicroBoard_2_2/CellGrid" unique_id=1507889470]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_1" type="Button" parent="Board/MacroGrid/MicroBoard_2_2/CellGrid" unique_id=1802187283]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="Cell_2_2" type="Button" parent="Board/MacroGrid/MicroBoard_2_2/CellGrid" unique_id=249231492]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+
+[node name="MacroWinLine" type="Line2D" parent="Board" unique_id=335001007]
+visible = false
+width = 6.0
+default_color = Color(0, 0, 0, 0)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=2018968940]
+
+[node name="StatusLabel" type="Label" parent="UI" unique_id=837691793]
+offset_left = 676.0
+offset_top = 176.0
+offset_right = 1076.0
+offset_bottom = 216.0
+theme_override_font_sizes/font_size = 28
+text = "超级井字棋 - X 先手"
+horizontal_alignment = 1
+
+[node name="FreeChoiceHint" type="Label" parent="UI" unique_id=2137225697]
+offset_left = 717.0
+offset_top = 273.0
+offset_right = 1126.0
+offset_bottom = 306.0
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="UndoButton" type="Button" parent="UI" unique_id=1051901020]
+offset_left = 915.0
+offset_top = 391.0
+offset_right = 1035.0
+offset_bottom = 431.0
+disabled = true
+text = "悔棋"
+
+[node name="ResetButton" type="Button" parent="UI" unique_id=484996157]
+offset_left = 775.0
+offset_top = 391.0
+offset_right = 895.0
+offset_bottom = 431.0
+text = "重新开始"
