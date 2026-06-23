@@ -87,9 +87,9 @@ var _micro_board_nodes: Dictionary = {}
 
 ## ----------------------------- 初始化 -----------------------------
 func _ready():
-	_board_node = get_node("/root/Main/Board") as Node2D
+	_board_node = get_node("/root/Game/Board") as Node2D
 	_macro_win_line = _board_node.get_node("MacroWinLine") as Line2D
-	var ui_layer: CanvasLayer = get_node("/root/Main/UI") as CanvasLayer
+	var ui_layer: CanvasLayer = get_node("/root/Game/UI") as CanvasLayer
 	_status_label = ui_layer.get_node("StatusLabel") as Label
 	_free_choice_hint = ui_layer.get_node("FreeChoiceHint") as Label
 	_undo_button = ui_layer.get_node("UndoButton") as Button

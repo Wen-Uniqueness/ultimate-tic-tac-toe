@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Ultimate Tic-Tac-Toe"
-run/main_scene="uid://c6r7qx23m4tq2"
+run/main_scene="uid://b1hhf6gjr8p0r"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
