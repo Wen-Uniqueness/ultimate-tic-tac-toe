@@ -31,7 +31,7 @@ const CELL_SCRIPT = preload("res://scripts/cell.gd")
 
 
 func _ready():
-	var gm = get_node("/root/GameManager")
+	var gm = _get_game_manager()
 	if gm:
 		cell_clicked.connect(gm._on_cell_clicked)
 
@@ -131,7 +131,7 @@ func set_cell(row: int, col: int, state):
 	if not btn:
 		return
 
-	var gm = get_node("/root/GameManager")
+	var gm = _get_game_manager()
 
 	var text = ""
 	match state:
@@ -161,7 +161,7 @@ func set_lock_appearance(state):
 	if not _overlay:
 		return
 
-	var gm = get_node("/root/GameManager")
+	var gm = _get_game_manager()
 	if not gm:
 		return
 
@@ -232,3 +232,14 @@ func _get_cell_button(row: int, col: int):
 
 func reset_display():
 	reset_visuals()
+
+
+## 动态查找 GameManager（兼容 game.tscn 和 single_mode.tscn）
+func _get_game_manager():
+	var gm = get_node("/root/Game/GameManager")
+	if gm:
+		return gm
+	gm = get_node("/root/SingleMode/GameManager")
+	if gm:
+		return gm
+	return null

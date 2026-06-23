@@ -1,4 +1,4 @@
-## ============================================================================
+﻿## ============================================================================
 ## game_manager.gd — 超级井字棋 全局游戏管理器
 ## 负责维护所有游戏状态、规则判定、UI 更新。
 ## ============================================================================
@@ -64,6 +64,8 @@ class MicroBoard:
 ## ----------------------------- 信号 -----------------------------
 signal move_made(macro_pos: Vector2i, cell_pos: Vector2i)
 signal game_ended(result: Dictionary)   # result 包含 "result" (win/draw) 和 "winner" (CellState)
+signal ai_started_thinking()
+signal ai_finished_thinking()
 
 
 ## ----------------------------- 游戏状态变量 -----------------------------
@@ -74,6 +76,10 @@ var macro_states: Array[BoardState]          # 9 个宏观格状态
 var move_history: Array[Dictionary]          # 历史记录，用于悔棋
 var game_over: bool = false
 
+## ----------------------------- AI 相关变量 -----------------------------
+var _ai_thinking: bool = false
+var _ai_turn: bool = false
+
 ## ----------------------------- 节点引用 -----------------------------
 var _board_node: Node2D
 var _macro_win_line: Line2D
@@ -81,28 +87,29 @@ var _status_label: Label
 var _free_choice_hint: Label
 var _undo_button: Button
 
+## AI 对手节点（在场景中通过 Inspector 或自动查找设置）
+@export var ai_player_node: Node = null
+
 ## 存储已发现的微观棋盘节点（键：Vector2i，值：节点引用）
 var _micro_board_nodes: Dictionary = {}
 
 
 ## ----------------------------- 初始化 -----------------------------
 func _ready():
-	# 安全查找节点（兼容不同场景根路径）
-	var root_path = get_tree().current_scene.name
-	_board_node = get_node("/root/" + root_path + "/Board") as Node2D
+	if ai_player_node == null:
+		ai_player_node = get_node_or_null("../AIPlayer")
+
+	# 动态获取当前场景根路径
+	var root_name = "/root/" + get_tree().current_scene.name
+
+	_board_node = get_node(root_name + "/Board") as Node2D
 	if not _board_node:
-		_board_node = get_node("/root/Game/Board") as Node2D
-	if not _board_node:
-		push_error("Board 节点未找到，game_manager 无法初始化")
-		return
+		_board_node = get_node("/root/SingleMode/Board") as Node2D
 
 	_macro_win_line = _board_node.get_node("MacroWinLine") as Line2D
-	var ui_layer: CanvasLayer = get_node("/root/" + root_path + "/UI") as CanvasLayer
+	var ui_layer: CanvasLayer = get_node(root_name + "/UI") as CanvasLayer
 	if not ui_layer:
-		ui_layer = get_node("/root/Game/UI") as CanvasLayer
-	if not ui_layer:
-		push_error("UI 节点未找到")
-		return
+		ui_layer = get_node("/root/SingleMode/UI") as CanvasLayer
 
 	_status_label = ui_layer.get_node("StatusLabel") as Label
 	_free_choice_hint = ui_layer.get_node("FreeChoiceHint") as Label
@@ -146,6 +153,8 @@ func reset_game():
 	next_macro = Vector2i(-1, -1)
 	game_over = false
 	move_history.clear()
+	_ai_thinking = false
+	_ai_turn = false
 
 	# 创建 9 个微观棋盘
 	macro_boards.clear()
@@ -399,25 +408,37 @@ func _full_ui_update():
 	if game_over:
 		var macro_winner = check_macro_win()
 		if macro_winner != CellState.EMPTY:
-			var name = "X" if macro_winner == CellState.X else "O"
-			_status_label.text = name + " 获胜！"
+			if macro_winner == CellState.X:
+				_status_label.text = "玩家（X）获胜！"
+			else:
+				_status_label.text = "AI（O）获胜！"
 		else:
 			_status_label.text = "平局！"
 	else:
-		var name = "X" if current_player == CellState.X else "O"
-		_status_label.text = "轮到 " + name + " 落子"
+		if current_player == CellState.X:
+			_status_label.text = "轮到玩家（X）落子"
+		else:
+			_status_label.text = "AI（O）正在思考..."
 
 	# 自由选择提示
 	var is_free = (next_macro == Vector2i(-1, -1))
 	_free_choice_hint.visible = is_free
 	if is_free:
-		_free_choice_hint.text = "对手被送去的区域不可用，您现在可以任意选择落子区域"
+		if current_player == CellState.X:
+			_free_choice_hint.text = "AI 被送去的区域不可用，您可以任意选择落子区域"
+		else:
+			_free_choice_hint.text = "区域不可用，AI 将任意选择落子区域"
 
 	# 更新棋盘高亮
 	_update_board_highlights()
 
 
+
 func _update_board_highlights():
+	if _ai_thinking:
+		_disable_all_cells()
+		return
+
 	var allowed_macros = get_allowed_macros()
 	var allowed_set = {}
 	for v in allowed_macros:
@@ -444,9 +465,21 @@ func _update_board_highlights():
 				node.set_highlight(false, [] as Array[Vector2i])
 
 
+## ----------------------------- 辅助方法 -----------------------------
+func _disable_all_cells():
+	for node in _micro_board_nodes.values():
+		if node and node.has_method("set_highlight"):
+			node.set_highlight(false, [] as Array[Vector2i])
+
+
 ## ----------------------------- 微观棋盘点击回调 -----------------------------
 func _on_cell_clicked(macro_pos: Vector2i, cell_pos: Vector2i):
 	if game_over:
+		return
+	if _ai_thinking or current_player == CellState.O:
+		return
+
+	if _ai_thinking or current_player == CellState.O:
 		return
 
 	# 再次验证是否属于合法宏观格子（防御性检查）
@@ -461,3 +494,59 @@ func _on_cell_clicked(macro_pos: Vector2i, cell_pos: Vector2i):
 		return
 
 	make_move(macro_pos, cell_pos)
+
+	if not game_over and current_player == CellState.O:
+		_start_ai_turn()
+
+## ----------------------------- AI 回合 -----------------------------
+func _start_ai_turn():
+	if _ai_thinking:
+		return
+	if game_over:
+		return
+
+	_ai_thinking = true
+	_ai_turn = true
+	ai_started_thinking.emit()
+
+	_disable_all_cells()
+	_full_ui_update()
+
+	call_deferred("_execute_ai_move")
+
+
+func _execute_ai_move():
+	if not _ai_thinking or game_over:
+		return
+
+	if ai_player_node == null or not ai_player_node.has_method("get_move"):
+		push_error("AI 节点未正确配置！")
+		_ai_thinking = false
+		_ai_turn = false
+		return
+
+	var GameStateClass = preload("res://scripts/ai/game_state.gd")
+	var state = GameStateClass.from_game_manager(self)
+
+	var move = ai_player_node.get_move(state)
+
+	_ai_thinking = false
+	_ai_turn = false
+
+	if move.is_empty():
+		push_warning("AI 未返回有效走法")
+		_full_ui_update()
+		ai_finished_thinking.emit()
+		return
+
+	var macro_pos: Vector2i = move.get("macro", Vector2i(-1, -1))
+	var cell_pos: Vector2i = move.get("cell", Vector2i(-1, -1))
+
+	if macro_pos == Vector2i(-1, -1) or cell_pos == Vector2i(-1, -1):
+		push_warning("AI 返回的走法坐标无效")
+		_full_ui_update()
+		ai_finished_thinking.emit()
+		return
+
+	make_move(macro_pos, cell_pos)
+	ai_finished_thinking.emit()

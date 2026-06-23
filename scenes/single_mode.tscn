@@ -1,9 +1,11 @@
-[gd_scene format=3 uid="uid://b1hhf6gjr8p0r"]
+[gd_scene format=3 uid="uid://chfyy4ftp7ytd"]
 
-[ext_resource type="Script" uid="uid://blrmtqk8w5ylo" path="res://scripts/game_manager.gd" id="1"]
+[ext_resource type="Script" uid="uid://bcgy0rpkg58xn" path="res://scripts/ai/ai_game_manager.gd" id="1"]
 [ext_resource type="Script" uid="uid://dcjye2gpponbp" path="res://scripts/micro_board.gd" id="2"]
+[ext_resource type="Script" uid="uid://b85fv5aobo131" path="res://scripts/ai/ai_player.gd" id="3"]
+[ext_resource type="Script" uid="uid://crx7oahjmsuan" path="res://scripts/ai/eval_params.gd" id="4"]
 
-[node name="Game" type="Control" unique_id=663222742]
+[node name="SingleMode" type="Control" unique_id=663222742]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,6 +15,13 @@ grow_vertical = 2
 
 [node name="GameManager" type="Node" parent="." unique_id=176964810]
 script = ExtResource("1")
+
+[node name="AIPlayer" type="Node" parent="." unique_id=200000001 node_paths=PackedStringArray("eval_params_node")]
+script = ExtResource("3")
+eval_params_node = NodePath("../EvalParams")
+
+[node name="EvalParams" type="Node" parent="." unique_id=200000002]
+script = ExtResource("4")
 
 [node name="Board" type="Node2D" parent="." unique_id=2145260326]
 
@@ -689,10 +698,10 @@ default_color = Color(0, 0, 0, 0)
 [node name="UI" type="CanvasLayer" parent="." unique_id=2018968940]
 
 [node name="StatusLabel" type="Label" parent="UI" unique_id=837691793]
-offset_left = 677.0
-offset_top = 147.0
-offset_right = 1077.0
-offset_bottom = 187.0
+offset_left = 676.0
+offset_top = 176.0
+offset_right = 1076.0
+offset_bottom = 216.0
 theme_override_font_sizes/font_size = 28
 text = "超级井字棋 - X 先手"
 horizontal_alignment = 1
