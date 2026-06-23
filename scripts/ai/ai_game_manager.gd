@@ -1,4 +1,4 @@
-﻿## ============================================================================
+## ============================================================================
 ## game_manager.gd — 超级井字棋 全局游戏管理器
 ## 负责维护所有游戏状态、规则判定、UI 更新。
 ## ============================================================================
@@ -80,6 +80,9 @@ var game_over: bool = false
 var _ai_thinking: bool = false
 var _ai_turn: bool = false
 
+## 玩家使用的棋子（X 或 O），AI 则使用另一个
+var _player_side: int = CellState.X
+
 ## ----------------------------- 节点引用 -----------------------------
 var _board_node: Node2D
 var _macro_win_line: Line2D
@@ -116,11 +119,24 @@ func _ready():
 	_undo_button = ui_layer.get_node("UndoButton") as Button
 	_undo_button.disabled = true
 
+	# 获取难度和选边控件
+	var diff_option = ui_layer.get_node_or_null("DifficultyOption")
+	var side_option = ui_layer.get_node_or_null("SideOption")
+	var settings_hint = ui_layer.get_node_or_null("SettingsHint")
+	if diff_option:
+		diff_option.item_selected.connect(_on_difficulty_changed.bind(settings_hint))
+	if side_option:
+		side_option.item_selected.connect(_on_side_changed.bind(settings_hint))
+
 	_init_micro_board_refs()
 
 	var reset_btn = ui_layer.get_node_or_null("ResetButton")
 	if reset_btn:
 		reset_btn.pressed.connect(_on_reset_pressed)
+
+	var back_btn = ui_layer.get_node_or_null("BackToMenuButton")
+	if back_btn:
+		back_btn.pressed.connect(_on_back_to_menu_pressed)
 
 	reset_game()
 
@@ -149,12 +165,13 @@ func _on_reset_pressed():
 
 ## 重置游戏到初始状态
 func reset_game():
+	_apply_settings()
+	# X 始终先手，无论玩家选哪边
 	current_player = CellState.X
 	next_macro = Vector2i(-1, -1)
 	game_over = false
 	move_history.clear()
 	_ai_thinking = false
-	_ai_turn = false
 
 	# 创建 9 个微观棋盘
 	macro_boards.clear()
@@ -172,6 +189,10 @@ func reset_game():
 		mb.reset_display()   # 需在 micro_board.gd 中实现该方法
 
 	_full_ui_update()
+
+	# 若当前轮到 AI，立即开始 AI 回合
+	if not _ai_thinking and not game_over and not _is_player_side(current_player):
+		_start_ai_turn()
 
 
 ## ----------------------------- 合法性检查 -----------------------------
@@ -408,23 +429,23 @@ func _full_ui_update():
 	if game_over:
 		var macro_winner = check_macro_win()
 		if macro_winner != CellState.EMPTY:
-			if macro_winner == CellState.X:
-				_status_label.text = "玩家（X）获胜！"
+			if _is_player_side(macro_winner):
+				_status_label.text = "玩家获胜！"
 			else:
-				_status_label.text = "AI（O）获胜！"
+				_status_label.text = "AI 获胜！"
 		else:
 			_status_label.text = "平局！"
 	else:
-		if current_player == CellState.X:
-			_status_label.text = "轮到玩家（X）落子"
+		if _is_player_side(current_player):
+			_status_label.text = "轮到玩家落子"
 		else:
-			_status_label.text = "AI（O）正在思考..."
+			_status_label.text = "AI 正在思考..."
 
 	# 自由选择提示
 	var is_free = (next_macro == Vector2i(-1, -1))
 	_free_choice_hint.visible = is_free
 	if is_free:
-		if current_player == CellState.X:
+		if _is_player_side(current_player):
 			_free_choice_hint.text = "AI 被送去的区域不可用，您可以任意选择落子区域"
 		else:
 			_free_choice_hint.text = "区域不可用，AI 将任意选择落子区域"
@@ -476,10 +497,10 @@ func _disable_all_cells():
 func _on_cell_clicked(macro_pos: Vector2i, cell_pos: Vector2i):
 	if game_over:
 		return
-	if _ai_thinking or current_player == CellState.O:
+	if _ai_thinking or not _is_player_side(current_player):
 		return
 
-	if _ai_thinking or current_player == CellState.O:
+	if _ai_thinking or not _is_player_side(current_player):
 		return
 
 	# 再次验证是否属于合法宏观格子（防御性检查）
@@ -495,8 +516,49 @@ func _on_cell_clicked(macro_pos: Vector2i, cell_pos: Vector2i):
 
 	make_move(macro_pos, cell_pos)
 
-	if not game_over and current_player == CellState.O:
+	if not game_over and not _is_player_side(current_player):
 		_start_ai_turn()
+
+
+## ----------------------------- 返回菜单 -----------------------------
+func _on_back_to_menu_pressed():
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+
+## 判断某方是否为玩家所控的子
+func _is_player_side(side: int) -> bool:
+	return side == _player_side
+
+
+## ----------------------------- 设置变更 -----------------------------
+func _on_difficulty_changed(index: int, hint_label: Label):
+	if hint_label:
+		hint_label.visible = true
+
+
+func _on_side_changed(index: int, hint_label: Label):
+	if hint_label:
+		hint_label.visible = true
+
+
+## 应用 UI 设置到游戏（在 reset_game 时调用）
+func _apply_settings():
+	var ui_layer = get_node("/root/" + get_tree().current_scene.name + "/UI") as CanvasLayer
+	if not ui_layer:
+		return
+
+	var diff_option = ui_layer.get_node_or_null("DifficultyOption")
+	if diff_option and ai_player_node:
+		ai_player_node.difficulty = diff_option.selected
+
+	var side_option = ui_layer.get_node_or_null("SideOption")
+	if side_option:
+		# selected == 0: 玩家执 X（AI 执 O），selected == 1: 玩家执 O（AI 执 X）
+		_player_side = CellState.X if side_option.selected == 0 else CellState.O
+
+	var settings_hint = ui_layer.get_node_or_null("SettingsHint")
+	if settings_hint:
+		settings_hint.visible = false
 
 ## ----------------------------- AI 回合 -----------------------------
 func _start_ai_turn():

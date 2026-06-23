@@ -39,7 +39,7 @@ theme_override_constants/separation = 30
 custom_minimum_size = Vector2(400, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
-text = "     "
+text = "超级井字棋"
 horizontal_alignment = 1
 vertical_alignment = 1
 

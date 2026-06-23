@@ -115,6 +115,10 @@ func _ready():
 	if reset_btn:
 		reset_btn.pressed.connect(_on_reset_pressed)
 
+	var back_btn = ui_layer.get_node_or_null("BackToMenuButton")
+	if back_btn:
+		back_btn.pressed.connect(_on_back_to_menu_pressed)
+
 	reset_game()
 
 
@@ -444,6 +448,10 @@ func _update_board_highlights():
 				node.set_highlight(false, [] as Array[Vector2i])
 
 
+
+## ----------------------------- 返回菜单 -----------------------------
+func _on_back_to_menu_pressed():
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 ## ----------------------------- 微观棋盘点击回调 -----------------------------
 func _on_cell_clicked(macro_pos: Vector2i, cell_pos: Vector2i):
 	if game_over:
