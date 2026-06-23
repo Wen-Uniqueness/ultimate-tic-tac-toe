@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://co1hljrufv6sl"]
+
+[ext_resource type="Script" uid="uid://ck1pru7y7qum4" path="res://scripts/main_menu.gd" id="1"]
+
+[node name="MainMenu" type="Control" unique_id=1036639749]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1524903587]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=36044350]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1688027973]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1496061869]
+custom_minimum_size = Vector2(400, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "     "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=953637959]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="BtnSingle" type="Button" parent="VBoxContainer/ButtonContainer" unique_id=189720858]
+custom_minimum_size = Vector2(280, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 22
+text = "单人模式"
+
+[node name="BtnMulti" type="Button" parent="VBoxContainer/ButtonContainer" unique_id=1410220435]
+custom_minimum_size = Vector2(280, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 22
+text = "多人模式"
+
+[node name="BtnSettings" type="Button" parent="VBoxContainer/ButtonContainer" unique_id=108064409]
+custom_minimum_size = Vector2(280, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 22
+disabled = true
+text = "设置（未完成）"
+
+[node name="BtnQuit" type="Button" parent="VBoxContainer" unique_id=407671720]
+custom_minimum_size = Vector2(280, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "退出游戏"
