@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://co1hljrufv6sl"]
 
 [ext_resource type="Script" uid="uid://ck1pru7y7qum4" path="res://scripts/main_menu.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://ccyg3t5uqlwei" path="res://img/background.png" id="2_ekxnf"]
 
 [node name="MainMenu" type="Control" unique_id=1036639749]
 layout_mode = 3
@@ -16,6 +17,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
@@ -34,6 +37,23 @@ offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 30
+
+[node name="Background" type="Sprite2D" parent="VBoxContainer" unique_id=1018907724]
+position = Vector2(202, 204.00002)
+scale = Vector2(1.430693, 1.5130024)
+texture = ExtResource("2_ekxnf")
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Background" unique_id=53080209]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -404.0
+offset_top = -211.5
+offset_right = -404.0
+offset_bottom = -211.5
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12882975, 0.1288298, 0.12882978, 0.34117648)
 
 [node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1496061869]
 custom_minimum_size = Vector2(400, 80)
@@ -70,8 +90,32 @@ theme_override_font_sizes/font_size = 22
 disabled = true
 text = "设置（未完成）"
 
+[node name="BtnRules" type="Button" parent="VBoxContainer/ButtonContainer" unique_id=172839465]
+custom_minimum_size = Vector2(280, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 22
+text = "📖 游戏规则"
+
 [node name="BtnQuit" type="Button" parent="VBoxContainer" unique_id=407671720]
 custom_minimum_size = Vector2(280, 56)
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "退出游戏"
+
+[node name="RulesDialog" type="AcceptDialog" parent="." unique_id=606076910]
+title = "📖 游戏规则"
+initial_position = 1
+size = Vector2i(600, 480)
+
+[node name="RulesRichText" type="RichTextLabel" parent="RulesDialog" unique_id=1016830369]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 8.0
+offset_right = -16.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
