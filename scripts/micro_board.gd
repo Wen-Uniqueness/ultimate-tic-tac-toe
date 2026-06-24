@@ -33,7 +33,8 @@ const CELL_SCRIPT = preload("res://scripts/cell.gd")
 func _ready():
 	var gm = _get_game_manager()
 	if gm:
-		cell_clicked.connect(gm._on_cell_clicked)
+		if not cell_clicked.is_connected(gm._on_cell_clicked):
+			cell_clicked.connect(gm._on_cell_clicked)
 
 	cell_grid.columns = 3
 	cell_grid.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -51,10 +52,10 @@ func _ready():
 				buttons[i].set_script(CELL_SCRIPT)
 			buttons[i].cell_pos = Vector2i(col, row)
 			buttons[i].pressed.connect(_on_cell_pressed.bind(row, col))
-			buttons[i].add_theme_stylebox_override("normal", null)
-			buttons[i].add_theme_stylebox_override("hover", null)
-			buttons[i].add_theme_stylebox_override("pressed", null)
-			buttons[i].add_theme_stylebox_override("disabled", null)
+			buttons[i].remove_theme_stylebox_override("normal")
+			buttons[i].remove_theme_stylebox_override("hover")
+			buttons[i].remove_theme_stylebox_override("pressed")
+			buttons[i].remove_theme_stylebox_override("disabled")
 			buttons[i].add_theme_font_size_override("font_size", 28)
 
 	_overlay = Panel.new()
