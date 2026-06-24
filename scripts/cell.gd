@@ -46,6 +46,18 @@ func _ready():
 	_hover_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 	# 创建最后落子指示器（默认隐藏）
+
+	# 创建上一步落子高亮层（完整的格子背景高亮，与圆点标记独立）
+	_last_highlight = ColorRect.new()
+	_last_highlight.name = "LastMoveHighlight"
+	_last_highlight.color = Color(1, 0.85, 0.1, 0.15)  # 淡金色半透明背景
+	_last_highlight.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_last_highlight.show_behind_parent = true  # 显示在棋子下方，不遮挡 X/O
+	add_child(_last_highlight)
+	_last_highlight.size = size
+	_last_highlight.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_last_highlight.hide()
+
 	_last_move_indicator = ColorRect.new()
 	_last_move_indicator.name = "LastMoveIndicator"
 	_last_move_indicator.color = Color(1, 0.9, 0.1, 0.7)  # 金黄色半透明
@@ -105,10 +117,21 @@ func _on_button_up():
 
 
 ## 重置格子状态（用于新游戏）
+
+## 上一手落子高亮层（完整的格子背景高亮效果，与圆点标记独立）
+var _last_highlight: ColorRect
+
+## 设置上一手落子高亮
+func set_last_highlight(enabled: bool):
+	if not is_inside_tree():
+		return
+	if _last_highlight:
+		_last_highlight.visible = enabled
 func reset():
 	text = ""
 	disabled = false
 	is_last_move = false
+	_last_highlight.hide()
 	modulate = Color(1, 1, 1, 1)
 	_hover_overlay.color = Color(1, 1, 1, 0)
 	show()

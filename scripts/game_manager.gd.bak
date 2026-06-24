@@ -1,17 +1,15 @@
 ## ============================================================================
-## game_manager.gd — 超级井字棋 全局游戏管理器
-## 负责维护所有游戏状态、规则判定、UI 更新。
-## ============================================================================
+## game_manager.gd �?超级井字�?全局游戏管理�?## 负责维护所有游戏状态、规则判定、UI 更新�?## ============================================================================
 extends Node
 
 
-## ----------------------------- 常量与枚举 -----------------------------
+## ----------------------------- 常量与枚�?-----------------------------
 enum CellState { EMPTY, X, O }
 enum BoardState { IN_PLAY, WON_BY_X, WON_BY_O, LOCKED }
 
-## ----------------------------- 微观棋盘内部类 -----------------------------
+## ----------------------------- 微观棋盘内部�?-----------------------------
 class MicroBoard:
-	var cells: Array[Array]  # 3x3 二维数组，存储 CellState
+	var cells: Array[Array]  # 3x3 二维数组，存�?CellState
 
 	func _init():
 		# 初始化为全空棋盘
@@ -35,25 +33,20 @@ class MicroBoard:
 	func check_win() -> CellState:
 		return _check_win_for_state(cells)
 
-	## 静态工具方法：传入 3x3 网格，判断是否有人连成一线
-	static func _check_win_for_state(grid: Array[Array]) -> CellState:
-		# 横
-		for r in range(3):
+	## 静态工具方法：传入 3x3 网格，判断是否有人连成一�?	static func _check_win_for_state(grid: Array[Array]) -> CellState:
+		# �?		for r in range(3):
 			if grid[r][0] != CellState.EMPTY and grid[r][0] == grid[r][1] and grid[r][1] == grid[r][2]:
 				return grid[r][0]
-		# 竖
-		for c in range(3):
+		# �?		for c in range(3):
 			if grid[0][c] != CellState.EMPTY and grid[0][c] == grid[1][c] and grid[1][c] == grid[2][c]:
 				return grid[0][c]
-		# 对角线
-		if grid[0][0] != CellState.EMPTY and grid[0][0] == grid[1][1] and grid[1][1] == grid[2][2]:
+		# 对角�?		if grid[0][0] != CellState.EMPTY and grid[0][0] == grid[1][1] and grid[1][1] == grid[2][2]:
 			return grid[0][0]
 		if grid[0][2] != CellState.EMPTY and grid[0][2] == grid[1][1] and grid[1][1] == grid[2][0]:
 			return grid[0][2]
 		return CellState.EMPTY
 
-	## 判断棋盘是否已满（无空格）
-	func is_full() -> bool:
+	## 判断棋盘是否已满（无空格�?	func is_full() -> bool:
 		for r in range(3):
 			for c in range(3):
 				if cells[r][c] == CellState.EMPTY:
@@ -63,17 +56,13 @@ class MicroBoard:
 
 ## ----------------------------- 信号 -----------------------------
 signal move_made(macro_pos: Vector2i, cell_pos: Vector2i)
-signal game_ended(result: Dictionary)   # result 包含 "result" (win/draw) 和 "winner" (CellState)
+signal game_ended(result: Dictionary)   # result 包含 "result" (win/draw) �?"winner" (CellState)
 
-signal last_move_changed(macro_pos, cell_pos)  # 上一手落子位置变化信号，历史为空时两个参数均为 null
 
-## ----------------------------- 游戏状态变量 -----------------------------
+## ----------------------------- 游戏状态变�?-----------------------------
 var current_player: CellState = CellState.X
 var next_macro: Vector2i = Vector2i(-1, -1)  # (-1,-1) 表示无限制，可任意选择
-var macro_boards: Array[MicroBoard]          # 9 个微观棋盘实例
-var macro_states: Array[BoardState]          # 9 个宏观格状态
-var move_history: Array[Dictionary]          # 历史记录，用于悔棋
-var game_over: bool = false
+var macro_boards: Array[MicroBoard]          # 9 个微观棋盘实�?var macro_states: Array[BoardState]          # 9 个宏观格状�?var move_history: Array[Dictionary]          # 历史记录，用于悔�?var game_over: bool = false
 
 ## ----------------------------- 节点引用 -----------------------------
 var _board_node: Node2D
@@ -82,19 +71,17 @@ var _status_label: Label
 var _free_choice_hint: Label
 var _undo_button: Button
 
-## 存储已发现的微观棋盘节点（键：Vector2i，值：节点引用）
-var _micro_board_nodes: Dictionary = {}
+## 存储已发现的微观棋盘节点（键：Vector2i，值：节点引用�?var _micro_board_nodes: Dictionary = {}
 
 
-## ----------------------------- 初始化 -----------------------------
+## ----------------------------- 初始�?-----------------------------
 func _ready():
-	# 安全查找节点（兼容不同场景根路径）
-	var root_path = get_tree().current_scene.name
+	# 安全查找节点（兼容不同场景根路径�?	var root_path = get_tree().current_scene.name
 	_board_node = get_node("/root/" + root_path + "/Board") as Node2D
 	if not _board_node:
 		_board_node = get_node("/root/Game/Board") as Node2D
 	if not _board_node:
-		push_error("Board 节点未找到，game_manager 无法初始化")
+		push_error("Board 节点未找到，game_manager 无法初始�?)
 		return
 
 	_macro_win_line = _board_node.get_node("MacroWinLine") as Line2D
@@ -102,7 +89,7 @@ func _ready():
 	if not ui_layer:
 		ui_layer = get_node("/root/Game/UI") as CanvasLayer
 	if not ui_layer:
-		push_error("UI 节点未找到")
+		push_error("UI 节点未找�?)
 		return
 
 	_status_label = ui_layer.get_node("StatusLabel") as Label
@@ -111,7 +98,6 @@ func _ready():
 	_undo_button.disabled = true
 
 	_init_micro_board_refs()
-	_emit_last_move()
 
 	var reset_btn = ui_layer.get_node_or_null("ResetButton")
 	if reset_btn:
@@ -121,14 +107,10 @@ func _ready():
 	if back_btn:
 		back_btn.pressed.connect(_on_back_to_menu_pressed)
 
-	_undo_button.pressed.connect(_on_undo_pressed)
-	# 连接上一手高亮更新信号
-	last_move_changed.connect(_update_last_move_highlight)
-
 	reset_game()
 
 
-## 递归查找所有微观棋盘节点，并连接 cell_clicked 信号
+## 递归查找所有微观棋盘节点，并连�?cell_clicked 信号
 func _init_micro_board_refs():
 	_micro_board_nodes.clear()
 	_find_micro_boards(_board_node)
@@ -138,8 +120,7 @@ func _find_micro_boards(node: Node):
 		if child.has_method("set_highlight") and child.get("macro_pos") != null:
 			var mb_pos: Vector2i = child.macro_pos
 			_micro_board_nodes[mb_pos] = child
-			# 连接信号，确保不会重复连接（首次连接前先断开再连接，防止重复）
-			if child.has_signal("cell_clicked"):
+			# 连接信号，确保不会重复连接（首次连接前先断开再连接，防止重复�?			if child.has_signal("cell_clicked"):
 				if child.cell_clicked.is_connected(_on_cell_clicked):
 					child.cell_clicked.disconnect(_on_cell_clicked)
 				child.cell_clicked.connect(_on_cell_clicked)
@@ -150,15 +131,13 @@ func _on_reset_pressed():
 	reset_game()
 
 
-## 重置游戏到初始状态
-func reset_game():
+## 重置游戏到初始状�?func reset_game():
 	current_player = CellState.X
 	next_macro = Vector2i(-1, -1)
 	game_over = false
 	move_history.clear()
 
-	# 创建 9 个微观棋盘
-	macro_boards.clear()
+	# 创建 9 个微观棋�?	macro_boards.clear()
 	macro_states.clear()
 	for i in range(9):
 		macro_boards.append(MicroBoard.new())
@@ -168,17 +147,13 @@ func reset_game():
 	if _macro_win_line:
 		_macro_win_line.hide()
 
-	# 清除所有微观棋盘的视觉状态
-	for mb in _micro_board_nodes.values():
-		mb.reset_display()   # 需在 micro_board.gd 中实现该方法
-
-	# 连接上一手高亮更新信号
-	_emit_last_move()
+	# 清除所有微观棋盘的视觉状�?	for mb in _micro_board_nodes.values():
+		mb.reset_display()   # 需�?micro_board.gd 中实现该方法
 
 	_full_ui_update()
 
 
-## ----------------------------- 合法性检查 -----------------------------
+## ----------------------------- 合法性检�?-----------------------------
 func is_legal(macro_pos: Vector2i, cell_pos: Vector2i) -> bool:
 	if game_over:
 		return false
@@ -193,22 +168,19 @@ func is_legal(macro_pos: Vector2i, cell_pos: Vector2i) -> bool:
 	if board.cells[cell_pos.y][cell_pos.x] != CellState.EMPTY:
 		return false
 
-	# 如果 next_macro 为 (-1,-1)，允许任意可用宏观棋盘
-	if next_macro == Vector2i(-1, -1):
+	# 如果 next_macro �?(-1,-1)，允许任意可用宏观棋�?	if next_macro == Vector2i(-1, -1):
 		return true
 	else:
 		return macro_pos == next_macro
 
 
-## 获取当前玩家所有可落子的宏观棋盘坐标列表
-func get_allowed_macros() -> Array[Vector2i]:
+## 获取当前玩家所有可落子的宏观棋盘坐标列�?func get_allowed_macros() -> Array[Vector2i]:
 	var allowed: Array[Vector2i] = []
 	if game_over:
 		return allowed
 
 	if next_macro == Vector2i(-1, -1):
-		# 无限制：返回所有仍可下的宏观棋盘
-		for y in range(3):
+		# 无限制：返回所有仍可下的宏观棋�?		for y in range(3):
 			for x in range(3):
 				var idx = y * 3 + x
 				if macro_states[idx] == BoardState.IN_PLAY:
@@ -236,8 +208,7 @@ func make_move(macro_pos: Vector2i, cell_pos: Vector2i) -> Dictionary:
 	var idx = macro_pos.y * 3 + macro_pos.x
 	var board: MicroBoard = macro_boards[idx]
 
-	# 记录历史（悔棋用）
-	var history_entry = {
+	# 记录历史（悔棋用�?	var history_entry = {
 		"macro": macro_pos,
 		"cell": cell_pos,
 		"player": current_player,
@@ -270,8 +241,7 @@ func make_move(macro_pos: Vector2i, cell_pos: Vector2i) -> Dictionary:
 		if mb_node:
 			mb_node.set_lock_appearance(macro_states[idx])
 
-	# 确定对手的下一手限制区域
-	var target_macro = Vector2i(cell_pos.x, cell_pos.y)
+	# 确定对手的下一手限制区�?	var target_macro = Vector2i(cell_pos.x, cell_pos.y)
 	var target_idx = target_macro.y * 3 + target_macro.x
 	if target_idx >= 0 and target_idx < 9 and macro_states[target_idx] == BoardState.IN_PLAY:
 		next_macro = target_macro
@@ -281,11 +251,7 @@ func make_move(macro_pos: Vector2i, cell_pos: Vector2i) -> Dictionary:
 	history_entry["next_macro_after"] = next_macro
 	move_history.append(history_entry)
 
-	# 连接上一手高亮更新信号
-	_emit_last_move()
-
-	# 检查宏观胜利
-	var macro_winner = check_macro_win()
+	# 检查宏观胜�?	var macro_winner = check_macro_win()
 	var result_type = "none"
 	var final_winner = CellState.EMPTY
 
@@ -306,7 +272,7 @@ func make_move(macro_pos: Vector2i, cell_pos: Vector2i) -> Dictionary:
 	# 刷新 UI
 	_full_ui_update()
 
-	# 检查平局：所有宏观格均不可用 或 当前玩家无合法落子点
+	# 检查平局：所有宏观格均不可用 �?当前玩家无合法落子点
 	if not game_over:
 		var draw = true
 		for i in range(9):
@@ -328,112 +294,8 @@ func make_move(macro_pos: Vector2i, cell_pos: Vector2i) -> Dictionary:
 
 
 ## ----------------------------- 宏观胜负判断 -----------------------------
-
-
-## 发射上一手落子位置变化信号
-
-## 从数据层同步所有微观棋盘格子的显示
-## 在悔棋后调用，确保每个格子显示正确的 X/O/空白
-func _sync_all_boards_visuals():
-	for y in range(3):
-		for x in range(3):
-			var pos = Vector2i(x, y)
-			var mb_node = _micro_board_nodes.get(pos)
-			if not mb_node:
-				continue
-			var idx = y * 3 + x
-			if idx < 0 or idx >= macro_boards.size():
-				continue
-			var board_data: MicroBoard = macro_boards[idx]
-			mb_node.sync_from_data(board_data.cells)
-
-func _emit_last_move():
-	if move_history.is_empty():
-		last_move_changed.emit(null, null)
-	else:
-		var last = move_history[-1]
-		last_move_changed.emit(last["macro"], last["cell"])
-
-
-## 发射上一手落子位置变化信号 last_move_changed 
-func _update_last_move_highlight(macro_pos, cell_pos):
-	# 清除所有格子的高亮
-	for y in range(3):
-		for x in range(3):
-			var pos = Vector2i(x, y)
-			var mb_node = _micro_board_nodes.get(pos)
-			if not mb_node:
-				continue
-			for cy in range(3):
-				for cx in range(3):
-					var cell = mb_node.get_cell(cy, cx)
-					if cell:
-						cell.set_last_highlight(false)
-
-	# 连接上一手高亮更新信号
-	if macro_pos != null and cell_pos != null:
-		var mb_node = _micro_board_nodes.get(macro_pos)
-		if mb_node:
-			var cell = mb_node.get_cell(cell_pos.y, cell_pos.x)
-			if cell:
-				cell.set_last_highlight(true)
-
-
-## 悔棋：撤销最后一步操作
-
-## 悔棋：撤销最后一步操作
-func _on_undo_pressed():
-	if move_history.is_empty() or game_over:
-		return
-
-	# 获取最后一步记录
-	var last = move_history[-1]
-
-	# 解析坐标
-	var macro_pos: Vector2i = last["macro"]
-	var cell_pos: Vector2i = last["cell"]
-	var idx = macro_pos.y * 3 + macro_pos.x
-
-	# 将微观棋盘数据中的棋子清空
-	var board: MicroBoard = macro_boards[idx]
-	board.cells[cell_pos.y][cell_pos.x] = CellState.EMPTY
-
-	# 恢复宏观棋盘状态
-	macro_states[idx] = last["macro_state_before"]
-	next_macro = last["next_macro_before"]
-
-	# 更新该微观棋盘的视觉锁定状态（如果已解除锁定）
-	var mb_node = _micro_board_nodes.get(macro_pos)
-	if mb_node:
-		# 先移除 overlay（锁定/获胜遮罩），恢复为普通状态
-		mb_node.reset_visuals()
-		# 立刻从数据层同步恢复所有格子的显示
-		mb_node.sync_from_data(board.cells)
-
-	# 恢复玩家
-	current_player = last["player"]
-
-	# 从历史中移除
-	move_history.pop_back()
-
-	# 隐藏宏观胜利线（如果有）
-	if _macro_win_line:
-		_macro_win_line.hide()
-
-	# 重置游戏结束标志
-	game_over = false
-
-	# 同步所有棋盘格子的显示（确保 UI 与数据层完全一致）
-	_sync_all_boards_visuals()
-
-	# 发射信号更新上一手高亮
-	_emit_last_move()
-
-	# 刷新全部 UI（状态标签、棋盘高亮、悔棋按钮等）
-	_full_ui_update()
 func check_macro_win() -> CellState:
-	# 将宏观棋盘状态转为 3x3 的 CellState 矩阵，再复用静态方法判断
-	var grid: Array[Array] = []
+	# 将宏观棋盘状态转�?3x3 �?CellState 矩阵，再复用静态方法判�?	var grid: Array[Array] = []
 	for y in range(3):
 		var row: Array[CellState] = []
 		for x in range(3):
@@ -465,16 +327,13 @@ func _get_macro_win_positions() -> Array[Vector2i]:
 				row.append(CellState.EMPTY)
 		grid.append(row)
 
-	# 横
-	for r in range(3):
+	# �?	for r in range(3):
 		if grid[r][0] != CellState.EMPTY and grid[r][0] == grid[r][1] and grid[r][1] == grid[r][2]:
 			return [Vector2i(0, r), Vector2i(1, r), Vector2i(2, r)]
-	# 竖
-	for c in range(3):
+	# �?	for c in range(3):
 		if grid[0][c] != CellState.EMPTY and grid[0][c] == grid[1][c] and grid[1][c] == grid[2][c]:
 			return [Vector2i(c, 0), Vector2i(c, 1), Vector2i(c, 2)]
-	# 对角线
-	if grid[0][0] != CellState.EMPTY and grid[0][0] == grid[1][1] and grid[1][1] == grid[2][2]:
+	# 对角�?	if grid[0][0] != CellState.EMPTY and grid[0][0] == grid[1][1] and grid[1][1] == grid[2][2]:
 		return [Vector2i(0, 0), Vector2i(1, 1), Vector2i(2, 2)]
 	if grid[0][2] != CellState.EMPTY and grid[0][2] == grid[1][1] and grid[1][1] == grid[2][0]:
 		return [Vector2i(0, 2), Vector2i(1, 1), Vector2i(2, 0)]
@@ -493,13 +352,11 @@ func _show_macro_win_line(win_cells, winner):
 		CellState.O:
 			_macro_win_line.default_color = Color(1.0, 0.0, 0.0, 0.9)
 
-	# 获取 MacroGrid 以计算每个宏观格的位置
-	var macro_grid = _board_node.get_node("MacroGrid") as GridContainer
+	# 获取 MacroGrid 以计算每个宏观格的位�?	var macro_grid = _board_node.get_node("MacroGrid") as GridContainer
 	if not macro_grid:
 		return
 
-	# 计算线条端点（宏观格中心坐标，相对 Board 节点）
-	var points = PackedVector2Array()
+	# 计算线条端点（宏观格中心坐标，相�?Board 节点�?	var points = PackedVector2Array()
 	for cell in win_cells:
 		var mb_node = _micro_board_nodes.get(cell)
 		if not mb_node:
@@ -514,14 +371,13 @@ func _show_macro_win_line(win_cells, winner):
 
 ## ----------------------------- UI 更新 -----------------------------
 func _full_ui_update():
-	# 状态标签
-	if game_over:
+	# 状态标�?	if game_over:
 		var macro_winner = check_macro_win()
 		if macro_winner != CellState.EMPTY:
 			var name = "X" if macro_winner == CellState.X else "O"
-			_status_label.text = name + " 获胜！"
+			_status_label.text = name + " 获胜�?
 		else:
-			_status_label.text = "平局！"
+			_status_label.text = "平局�?
 	else:
 		var name = "X" if current_player == CellState.X else "O"
 		_status_label.text = "轮到 " + name + " 落子"
@@ -529,9 +385,6 @@ func _full_ui_update():
 	# 自由选择提示
 	var is_free = (next_macro == Vector2i(-1, -1))
 	_free_choice_hint.visible = is_free
-
-	# 获取最后一步记录
-	_undo_button.disabled = move_history.is_empty()
 	if is_free:
 		_free_choice_hint.text = "对手被送去的区域不可用，您现在可以任意选择落子区域"
 
@@ -583,7 +436,8 @@ func _on_cell_clicked(macro_pos: Vector2i, cell_pos: Vector2i):
 			is_valid = true
 			break
 	if not is_valid:
-		push_warning("非法落子：macro_pos ", macro_pos, " 不在允许列表中")
+		push_warning("非法落子：macro_pos ", macro_pos, " 不在允许列表�?)
 		return
 
 	make_move(macro_pos, cell_pos)
+

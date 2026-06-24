@@ -223,6 +223,10 @@ func _on_cell_pressed(row: int, col: int):
 	emit_signal("cell_clicked", macro_pos, Vector2i(col, row))
 
 
+
+##  Cell 
+func get_cell(row: int, col: int):
+	return _get_cell_button(row, col)
 func _get_cell_button(row: int, col: int):
 	if row < 0 or row >= _cells.size():
 		return null
@@ -230,6 +234,16 @@ func _get_cell_button(row: int, col: int):
 		return null
 	return _cells[row][col]
 
+
+## 从内部数据数组（cells）同步刷新所有格子的显示
+
+## 从 GameManager 数据层同步刷新本棋盘所有格子的显示
+## 在悔棋或重置后调用，确保 UI 与数据状态完全一致
+func sync_from_data(cells_data: Array):
+	for row in range(3):
+		for col in range(3):
+			if row < cells_data.size() and col < cells_data[row].size():
+				set_cell(row, col, cells_data[row][col])
 func reset_display():
 	reset_visuals()
 
