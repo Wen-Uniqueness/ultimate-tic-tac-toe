@@ -39,7 +39,7 @@ grow_vertical = 2
 theme_override_constants/separation = 30
 
 [node name="Background" type="Sprite2D" parent="VBoxContainer" unique_id=1018907724]
-position = Vector2(202, 204.00002)
+position = Vector2(194.99998, 232.99998)
 scale = Vector2(1.430693, 1.5130024)
 texture = ExtResource("2_ekxnf")
 
@@ -47,10 +47,10 @@ texture = ExtResource("2_ekxnf")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -404.0
-offset_top = -211.5
-offset_right = -404.0
-offset_bottom = -211.5
+offset_left = -402.60208
+offset_top = -210.17813
+offset_right = -402.60208
+offset_bottom = -210.17813
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.12882975, 0.1288298, 0.12882978, 0.34117648)
