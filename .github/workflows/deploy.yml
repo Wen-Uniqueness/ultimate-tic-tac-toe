@@ -20,12 +20,35 @@ jobs:
     name: Export Godot Web Build
     runs-on: ubuntu-latest
 
-    container:
-      image: barichello/godot-ci:4.7.0
-
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
+
+      - name: Install Godot 4.7 and Web export templates
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          GODOT_VERSION="4.7-stable"
+          GODOT_DIR="$RUNNER_TEMP/godot"
+          TEMPLATE_DIR="$HOME/.local/share/godot/export_templates/4.7.stable"
+
+          mkdir -p "$GODOT_DIR" "$TEMPLATE_DIR"
+
+          curl -L --fail --retry 3 \
+            -o "$RUNNER_TEMP/godot.zip" \
+            "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$GODOT_DIR"
+          mv "$GODOT_DIR/Godot_v${GODOT_VERSION}_linux.x86_64" "$GODOT_DIR/godot"
+          chmod +x "$GODOT_DIR/godot"
+
+          curl -L --fail --retry 3 \
+            -o "$RUNNER_TEMP/export_templates.tpz" \
+            "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_export_templates.tpz"
+          unzip -q "$RUNNER_TEMP/export_templates.tpz" -d "$RUNNER_TEMP/export_templates"
+          cp -R "$RUNNER_TEMP/export_templates/templates/." "$TEMPLATE_DIR/"
+
+          echo "$GODOT_DIR" >> "$GITHUB_PATH"
 
       - name: Create export directory
         run: mkdir -p build/web
